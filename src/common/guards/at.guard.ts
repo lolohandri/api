@@ -7,8 +7,8 @@ export class AccessTokenGuard extends AuthGuard('jwt') {
     constructor(private reflector: Reflector) {
         super();
     }
-    canAvtivate(context: ExecutionContext) {
-        const isPublic = this.reflector.getAllAndOverride('isPublic', [
+    canActivate(context: ExecutionContext) {
+        const isPublic = this.reflector.getAllAndOverride('public', [
             context.getHandler(),
             context.getClass()
         ]);

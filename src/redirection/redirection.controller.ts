@@ -1,20 +1,15 @@
-import { BadRequestException, Controller, Get, Param, Redirect, Res } from '@nestjs/common';
+import { Controller, Get, Param, Redirect, Res } from '@nestjs/common';
 import { LinksService } from 'src/links/links.service';
-import * as express from 'express';
+import { Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller()
+@Controller('')
 @ApiTags('Redirection')
 export class RedirectionController {
-
     constructor(private readonly linksService: LinksService) { }
 
-    @Get('/:shortLink')
-    @Redirect()
-    async getOriginByShortLink(@Param('shortLink') shortLink: string, @Res() res: express.Response): Promise<void> {
-        const link = await this.linksService.getLink(shortLink);
-        if (!link?.originUrl) throw new BadRequestException('Invalid url');
-
-        return res.redirect(301, link.originUrl);
+    @Get(':shortUrl')
+    async redirectToOriginUrl(@Param('shortUrl') shortUrl: string, @Res() res: Response): Promise<void> {
+        return await this.linksService.redirectToOriginUrl(shortUrl, res);
     }
 }

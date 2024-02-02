@@ -1,6 +1,6 @@
-import { ShortLink } from "./short-link.interface";
+import { IShortLink } from "./short-link.interface";
 
-export class ShortLinkImpl implements ShortLink {
+export class ShortLinkImpl implements IShortLink {
     getShortLink(length: number): string {
         let result = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

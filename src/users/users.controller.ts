@@ -3,7 +3,9 @@ import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { DeleteResult } from 'typeorm';
 import { Observable } from 'rxjs';
-import { User } from './entity/user.entity';
+import { User } from '../entity/user/user.entity';
+import {Roles} from "../common/decorators/roles.decorator";
+import {Role} from "../utils/enums/role.enum";
 
 @Controller('users')
 @ApiTags('Users')
@@ -12,16 +14,22 @@ export class UsersController {
 
   @Get()
   async getUsers(): Promise<User[]> {
-    return this.usersService.getUsers();
+    return await this.usersService.getUsers();
   }
 
   @Get(':id')
   async getUser(@Param('id') id: string): Promise<User> {
-    return this.usersService.getUser(id);
+    return await this.usersService.getUserById(id);
   }
 
+  // @Roles(Role.ADMIN)
   @Delete(':id')
   async deleteUser(@Param('id') id: string): Promise<DeleteResult> {
-    return this.usersService.deleteUser(id);
+    return await this.usersService.deleteUser(id);
+  }
+
+  @Delete()
+  async deleteAll(): Promise<void> {
+    return await this.usersService.deleteAll();
   }
 }

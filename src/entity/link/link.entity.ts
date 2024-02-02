@@ -13,4 +13,7 @@ export class Link extends BaseEntity {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date: Date;
+
+    @Column({nullable: false})
+    createdBy: string;
 }

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { User } from 'src/users/entity/user.entity';
+import { User } from 'src/entity/user/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthController } from 'src/auth/auth.controller';
 import { AuthService } from 'src/auth/auth.service';
@@ -11,13 +11,12 @@ import { UsersService } from 'src/users/users.service';
 import { LinksModule } from 'src/links/links.module';
 import { LinksController } from 'src/links/links.controller';
 import { LinksService } from 'src/links/links.service';
-import { Link } from 'src/links/entities/link.entity';
-import { RedirectionController } from 'src/redirection/redirection.controller';
-import { RedirectionModule } from 'src/redirection/redirection.module';
+import { Link } from 'src/entity/link/link.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenStrategy } from 'src/auth/strategies/at.strategy';
 import { RefreshTokenStrategy } from 'src/auth/strategies/rt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { RedirectionModule } from 'src/redirection/redirection.module';
 
 @Module({
   imports: [
@@ -29,18 +28,28 @@ import { PassportModule } from '@nestjs/passport';
       username: process.env.POSTGRES_USERNAME || 'postgres',
       password: process.env.POSTGRES_PASSWORD || 'postgres',
       database: process.env.POSTGRES_DATABASE || 'postgres',
-      entities: [User, Link],
-      synchronize: true,
+      entities: [Link, User],
+      synchronize: true
     }),
     AuthModule,
     UsersModule,
     LinksModule,
-    RedirectionModule,
     PassportModule,
+    RedirectionModule,
     JwtModule.register({}),
   ],
-  controllers: [AuthController, UsersController, LinksController, RedirectionController,],
-  providers: [AuthService, UsersService, LinksService, AccessTokenStrategy, RefreshTokenStrategy],
+  controllers: [
+    AuthController,
+    UsersController,
+    LinksController,
+  ],
+  providers: [
+    AuthService,
+    UsersService,
+    LinksService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+  ],
 })
 export class AppModule {
 }
